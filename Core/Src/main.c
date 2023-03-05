@@ -56,10 +56,10 @@ uint8_t CAN_temp5_value = 0;
 //uint8_t can_linv_value = 0;
 //uint8_t can_bat_value = 0;
 
-bool map_value_active = 0;
-bool tc_value_active = 0;
-bool speed_value_active = 0;
-bool diff_value_active = 0;
+//bool map_value_active = 0;
+//bool tc_value_active = 0;
+//bool speed_value_active = 0;
+//bool diff_value_active = 0;
 
 
 

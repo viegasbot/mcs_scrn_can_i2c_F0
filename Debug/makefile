@@ -60,8 +60,8 @@ all: main-build
 main-build: mcs_scrn_can_i2c_F0.elf secondary-outputs
 
 # Tool invocations
-mcs_scrn_can_i2c_F0.elf mcs_scrn_can_i2c_F0.map: $(OBJS) $(USER_OBJS) D:\STM32CubeIDE_1.11.0\mcs_scrn_can_i2c_F0\mcs_scrn_can_i2c_F0\STM32F042C6TX_FLASH.ld makefile objects.list $(OPTIONAL_TOOL_DEPS)
-	arm-none-eabi-gcc -o "mcs_scrn_can_i2c_F0.elf" @"objects.list" $(USER_OBJS) $(LIBS) -mcpu=cortex-m0 -T"D:\STM32CubeIDE_1.11.0\mcs_scrn_can_i2c_F0\mcs_scrn_can_i2c_F0\STM32F042C6TX_FLASH.ld" --specs=nosys.specs -Wl,-Map="mcs_scrn_can_i2c_F0.map" -Wl,--gc-sections -static --specs=nano.specs -mfloat-abi=soft -mthumb -Wl,--start-group -lc -lm -Wl,--end-group
+mcs_scrn_can_i2c_F0.elf mcs_scrn_can_i2c_F0.map: $(OBJS) $(USER_OBJS) D:\STM32CubeIDE\mcs_scrn\mcs_scrn_can_i2c_F0\STM32F042C6TX_FLASH.ld makefile objects.list $(OPTIONAL_TOOL_DEPS)
+	arm-none-eabi-gcc -o "mcs_scrn_can_i2c_F0.elf" @"objects.list" $(USER_OBJS) $(LIBS) -mcpu=cortex-m0 -T"D:\STM32CubeIDE\mcs_scrn\mcs_scrn_can_i2c_F0\STM32F042C6TX_FLASH.ld" --specs=nosys.specs -Wl,-Map="mcs_scrn_can_i2c_F0.map" -Wl,--gc-sections -static --specs=nano.specs -mfloat-abi=soft -mthumb -Wl,--start-group -lc -lm -Wl,--end-group
 	@echo 'Finished building target: $@'
 	@echo ' '
 
