@@ -99,6 +99,7 @@ void Error_Handler(void);
 #define UART_TX_GPIO_Port GPIOB
 #define UART_RX_Pin GPIO_PIN_7
 #define UART_RX_GPIO_Port GPIOB
+
 /* USER CODE BEGIN Private defines */
 
 /* USER CODE END Private defines */
