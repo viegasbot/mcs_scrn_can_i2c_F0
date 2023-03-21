@@ -44,44 +44,6 @@ uint8_t CAN_temp3_value = 0;
 uint8_t CAN_temp4_value = 0;
 uint8_t CAN_temp5_value = 0;
 
-
-
-
-//uint8_t can_map_value = 0;
-//uint8_t can_tc_value = 0;
-//uint8_t can_speed_value = 0;
-//uint8_t can_diff_value = 0;
-//uint8_t can_ts_value = 0;
-//uint8_t can_leng_value = 0;
-//uint8_t can_linv_value = 0;
-//uint8_t can_bat_value = 0;
-
-//bool map_value_active = 0;
-//bool tc_value_active = 0;
-//bool speed_value_active = 0;
-//bool diff_value_active = 0;
-
-
-
-#define receiving 1
-uint8_t I2C_is_receiving_speed = 0;
-uint8_t I2C_is_receiving_temp = 0;
-uint8_t LED_State = 1;
-
-#define slave_addr 0x01
-uint16_t data_size = 1;
-uint8_t I2C_status = HAL_OK;
-
-#define connected_to_temp -120
-int8_t is_connected_to_temp = 0;
-int8_t data_temp_label = -120;
-uint8_t data_temp = 11;
-uint8_t polling = 0;
-
-#define connected_to_speed -119
-int8_t is_connected_to_speed = 0;
-int8_t data_speed_label = -119;
-uint8_t data_speed = 5;
 /* USER CODE END PTD */
 
 /* Private define ------------------------------------------------------------*/
@@ -91,19 +53,46 @@ uint8_t data_speed = 5;
 /* Private macro -------------------------------------------------------------*/
 /* USER CODE BEGIN PM */
 
-/*
-void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef *htim)
+
+uint8_t key_lock = 0;
+
+void HAL_GPIO_EXTI_Callback(uint16_t GPIO_Pin)
 {
-	if(htim == &htim14)
+	if(!key_lock && GPIO_Pin == SW1_Pin)
 	{
-		HAL_I2C_Master_Transmit_IT(&hi2c1, slave_addr, &data_temp_label, data_size);
-		HAL_GPIO_WritePin(PCB_LED_GREEN_GPIO_Port, PCB_LED_GREEN_Pin, LED_State);
-		LED_State = !LED_State;
-		I2C_is_receiving_temp = 1;
+		key_lock = 1;
+		HAL_GPIO_TogglePin(PCB_LED_GREEN_GPIO_Port, PCB_LED_GREEN_Pin);
+		HAL_TIM_Base_Start_IT(&htim14);
+	}
+
+	else if(key_lock && GPIO_Pin == SW1_Pin)
+	{
+		HAL_TIM_Base_Stop_IT(&htim14);
+		HAL_TIM_Base_Start_IT(&htim14);
+	}
+
+	else if(!key_lock && GPIO_Pin == SW2_Pin)
+	{
+		key_lock = 1;
+		HAL_GPIO_TogglePin(PCB_LED_GREEN_GPIO_Port, PCB_LED_GREEN_Pin);
+		HAL_TIM_Base_Start_IT(&htim14);
+	}
+
+	else if(key_lock && GPIO_Pin == SW2_Pin)
+	{
+		HAL_TIM_Base_Stop_IT(&htim14);
+		HAL_TIM_Base_Start_IT(&htim14);
 	}
 }
-*/
 
+
+void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef *htim)
+{
+  if (key_lock == 1 && htim == &htim14) {
+    HAL_TIM_Base_Stop_IT(&htim14);
+    key_lock = 0;
+  }
+}
 /* USER CODE END PM */
 
 /* Private variables ---------------------------------------------------------*/
@@ -156,8 +145,16 @@ int main(void)
   MX_USART1_UART_Init();
   MX_TIM14_Init();
   /* USER CODE BEGIN 2 */
-  /* USER CODE END 2 */
+
+
+//  HAL_GPIO_TogglePin(PCB_LED_GREEN_GPIO_Port, PCB_LED_GREEN_Pin);
+//  HAL_Delay(100);
+//  HAL_GPIO_TogglePin(PCB_LED_GREEN_GPIO_Port, PCB_LED_GREEN_Pin);
+//  HAL_Delay(100);
   CAN_Init();
+
+  /* USER CODE END 2 */
+
   /* Infinite loop */
   /* USER CODE BEGIN WHILE */
 
@@ -179,8 +176,8 @@ int main(void)
 
   while (1)
   {
-//		  HAL_GPIO_TogglePin(PCB_LED_RED_GPIO_Port, PCB_LED_RED_Pin);
-//		  HAL_Delay(400);
+//		  HAL_GPIO_TogglePin(PCB_LED_GREEN_GPIO_Port, PCB_LED_GREEN_Pin);
+//		  HAL_Delay(100);
 
 //	  if(var == true)
 //	  {
@@ -249,14 +246,6 @@ int main(void)
 //	  	  diff_value_active = false;
 //		  HAL_GPIO_TogglePin(PCB_LED_RED_GPIO_Port, PCB_LED_RED_Pin);
 //	  }
-
-
-
-
-
-
-
-
 
 
 
