@@ -29,7 +29,8 @@ Core/Src/can_config.o: ../Core/Src/can_config.c ../Core/Inc/main.h \
  ../Drivers/STM32F0xx_HAL_Driver/Inc/stm32f0xx_hal_tim_ex.h \
  ../Drivers/STM32F0xx_HAL_Driver/Inc/stm32f0xx_hal_uart.h \
  ../Drivers/STM32F0xx_HAL_Driver/Inc/stm32f0xx_hal_uart_ex.h \
- ../Core/Inc/can_config.h ../Core/Inc/main.h ../Core/Inc/can.h
+ ../Core/Inc/can_config.h ../Core/Inc/main.h ../Core/Inc/can.h \
+ ../Core/Inc/i2c_config.h
 ../Core/Inc/main.h:
 ../Drivers/STM32F0xx_HAL_Driver/Inc/stm32f0xx_hal.h:
 ../Core/Inc/stm32f0xx_hal_conf.h:
@@ -64,3 +65,4 @@ Core/Src/can_config.o: ../Core/Src/can_config.c ../Core/Inc/main.h \
 ../Core/Inc/can_config.h:
 ../Core/Inc/main.h:
 ../Core/Inc/can.h:
+../Core/Inc/i2c_config.h:

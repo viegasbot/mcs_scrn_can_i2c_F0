@@ -14,6 +14,8 @@
 #include "stm32f0xx_hal_can.h"
 #include "stdbool.h"
 
+#include "i2c_config.h" // mój include z i2c
+
 
 /* Variables and arrays needed to proper work of CAN */
 CAN_FilterTypeDef    sFilterConfig;
@@ -25,11 +27,11 @@ uint32_t			 TxMailbox;
 
 /* USER CODE BEGIN Externs */
 /* Externs used in configs */
+extern I2C_HandleTypeDef hi2c1;
 extern bool var;
 extern data_temp_label;
 extern data_size;
 extern I2C_is_receiving_temp;
-extern hi2c1;
 
 extern bool print;
 extern bool confirm_button;
@@ -509,8 +511,8 @@ void map_value_Handler(void)
 		 confirm_button = true;
 	 }*/
 
-	CANdata[0] = 0x05;
-	CANdata[1] = can_map_value;
+	CANdata[MSG_ID] = MAP_I2C_ID;
+	CANdata[MSG_VALUE] = can_map_value;
 	HAL_I2C_Master_Transmit_IT(&hi2c1, slave_addr, CANdata, CANsize);
 	HAL_GPIO_TogglePin(PCB_LED_RED_GPIO_Port, PCB_LED_RED_Pin);
 }
@@ -519,13 +521,8 @@ void tc_value_Handler(void)
 {
 	*(WriteMessage[3].Write_Data1) = RxData[1];
 
-//	if(RxData[0] == 0xD3)
-//	{
-//		tc_value_active = true;
-//	}
-
-	CANdata[0] = 0x04;
-    CANdata[1] = can_tc_value;
+	CANdata[MSG_ID] = TC_I2C_ID;
+    CANdata[MSG_VALUE] = can_tc_value;
     HAL_I2C_Master_Transmit_IT(&hi2c1, slave_addr, CANdata, CANsize);
     HAL_GPIO_TogglePin(PCB_LED_RED_GPIO_Port, PCB_LED_RED_Pin);
 }
@@ -534,13 +531,8 @@ void speed_value_Handler(void)
 {
 	*(WriteMessage[4].Write_Data1) = RxData[1];
 
-//	if(RxData[0] == 0xE3)
-//	{
-//		speed_value_active = true;
-//	}
-
-	CANdata[0] = 0x03;
-	CANdata[1] = can_speed_value;
+	CANdata[MSG_ID] = SPEED_I2C_ID;
+	CANdata[MSG_VALUE] = can_speed_value;
 	HAL_I2C_Master_Transmit_IT(&hi2c1, slave_addr, CANdata, CANsize);
 	HAL_GPIO_TogglePin(PCB_LED_RED_GPIO_Port, PCB_LED_RED_Pin);
 }
@@ -549,13 +541,8 @@ void diff_value_Handler(void)
 {
 	*(WriteMessage[5].Write_Data1) = RxData[1];
 
-//	if(RxData[0] == 0xF3)
-//	{
-//		diff_value_active = true;
-//	}
-
-	  CANdata[0] = 0x06;
-	  CANdata[1] = can_diff_value;
+	  CANdata[MSG_ID] = DIFF_I2C_ID;
+	  CANdata[MSG_VALUE] = can_diff_value;
 	  HAL_I2C_Master_Transmit_IT(&hi2c1, slave_addr, CANdata, CANsize);
 	  HAL_GPIO_TogglePin(PCB_LED_RED_GPIO_Port, PCB_LED_RED_Pin);
 }
@@ -564,8 +551,8 @@ void ts_value_Handler(void)
 {
 	*(WriteMessage[6].Write_Data1) = RxData[1];
 
-	  CANdata[0] = 0x07;
-	  CANdata[1] = can_ts_value;
+	  CANdata[MSG_ID] = TSAC_I2C_ID;
+	  CANdata[MSG_VALUE] = can_ts_value;
 	  HAL_I2C_Master_Transmit_IT(&hi2c1, slave_addr, CANdata, CANsize);
 	  HAL_GPIO_TogglePin(PCB_LED_RED_GPIO_Port, PCB_LED_RED_Pin);
 }
@@ -574,8 +561,8 @@ void leng_value_Handler(void)
 {
 	*(WriteMessage[7].Write_Data1) = RxData[1];
 
-	  CANdata[0] = 0x08;
-	  CANdata[1] = can_leng_value;
+	  CANdata[MSG_ID] = LENG_I2C_ID;
+	  CANdata[MSG_VALUE] = can_leng_value;
 	  HAL_I2C_Master_Transmit_IT(&hi2c1, slave_addr, CANdata, CANsize);
 	  HAL_GPIO_TogglePin(PCB_LED_RED_GPIO_Port, PCB_LED_RED_Pin);
 }
@@ -584,8 +571,8 @@ void linv_value_Handler(void)
 {
 	*(WriteMessage[8].Write_Data1) = RxData[1];
 
-	  CANdata[0] = 0x09;
-	  CANdata[1] = can_linv_value;
+	  CANdata[MSG_ID] = LINV_I2C_ID;
+	  CANdata[MSG_VALUE] = can_linv_value;
 	  HAL_I2C_Master_Transmit_IT(&hi2c1, slave_addr, CANdata, CANsize);
 	  HAL_GPIO_TogglePin(PCB_LED_RED_GPIO_Port, PCB_LED_RED_Pin);
 }
@@ -594,8 +581,8 @@ void bat_value_Handler(void)
 {
 	*(WriteMessage[9].Write_Data1) = RxData[1];
 
-	  CANdata[0] = 0xA;
-	  CANdata[1] = can_bat_value;
+	  CANdata[MSG_ID] = BAT_I2C_ID;
+	  CANdata[MSG_VALUE] = can_bat_value;
 	  HAL_I2C_Master_Transmit_IT(&hi2c1, slave_addr, CANdata, CANsize);
 	  HAL_GPIO_TogglePin(PCB_LED_RED_GPIO_Port, PCB_LED_RED_Pin);
 }
@@ -604,8 +591,8 @@ void rinv_value_Handler(void)
 {
 	*(WriteMessage[10].Write_Data1) = RxData[1];
 
-	  CANdata[0] = 0xB;
-	  CANdata[1] = can_rinv_value;
+	  CANdata[MSG_ID] = RINV_I2C_ID;
+	  CANdata[MSG_VALUE] = can_rinv_value;
 	  HAL_I2C_Master_Transmit_IT(&hi2c1, slave_addr, CANdata, CANsize);
 	  HAL_GPIO_TogglePin(PCB_LED_RED_GPIO_Port, PCB_LED_RED_Pin);
 }
@@ -614,8 +601,8 @@ void reng_value_Handler(void)
 {
 	*(WriteMessage[11].Write_Data1) = RxData[1];
 
-	  CANdata[0] = 0xC;
-	  CANdata[1] = can_reng_value;
+	  CANdata[MSG_ID] = RENG_I2C_ID;
+	  CANdata[MSG_VALUE] = can_reng_value;
 	  HAL_I2C_Master_Transmit_IT(&hi2c1, slave_addr, CANdata, CANsize);
 	  HAL_GPIO_TogglePin(PCB_LED_RED_GPIO_Port, PCB_LED_RED_Pin);
 }
@@ -624,8 +611,8 @@ void err_value_Handler(void)
 {
 	*(WriteMessage[12].Write_Data1) = RxData[1];
 
-	  CANdata[0] = 0xD;
-	  CANdata[1] = can_err_value;
+	  CANdata[MSG_ID] = ERR_I2C_ID;
+	  CANdata[MSG_VALUE] = can_err_value;
 	  HAL_I2C_Master_Transmit_IT(&hi2c1, slave_addr, CANdata, CANsize);
 	  HAL_GPIO_TogglePin(PCB_LED_RED_GPIO_Port, PCB_LED_RED_Pin);
 }
@@ -634,8 +621,8 @@ void hv_value_Handler(void)
 {
 	*(WriteMessage[13].Write_Data1) = RxData[1];
 
-	  CANdata[0] = 0xE;
-	  CANdata[1] = can_hv_value;
+	  CANdata[MSG_ID] = HV_I2C_ID;
+	  CANdata[MSG_VALUE] = can_hv_value;
 	  HAL_I2C_Master_Transmit_IT(&hi2c1, slave_addr, CANdata, CANsize);
 	  HAL_GPIO_TogglePin(PCB_LED_RED_GPIO_Port, PCB_LED_RED_Pin);
 }
@@ -644,8 +631,8 @@ void low_value_Handler(void)
 {
 	*(WriteMessage[14].Write_Data1) = RxData[1];
 
-	  CANdata[0] = 0xF;
-	  CANdata[1] = can_low_value;
+	  CANdata[MSG_ID] = LOW_I2C_ID;
+	  CANdata[MSG_VALUE] = can_low_value;
 	  HAL_I2C_Master_Transmit_IT(&hi2c1, slave_addr, CANdata, CANsize);
 	  HAL_GPIO_TogglePin(PCB_LED_RED_GPIO_Port, PCB_LED_RED_Pin);
 }

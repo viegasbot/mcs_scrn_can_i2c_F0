@@ -70,6 +70,12 @@ typedef enum
     Error_MeaningfulRegName2_ID = 0xBBu,
     Error_MeaningfulRegNameN_ID = 0xCCu
 } ErrorRegsID;
+
+enum CAN_MSG_FRAME
+{
+	MSG_ID = 0u,
+	MSG_VALUE = 1u
+};
 /* USER CODE END Registers */
 
 /* Enums to avoid magic numbers */
